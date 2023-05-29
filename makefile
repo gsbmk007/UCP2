@@ -1,31 +1,11 @@
-CC=gcc
-CFLAGS=-std=c89 -Wall -ansi -pedantic
+CC = gcc
+CFLAGS = -std=c89 -Wall -ansi -pedantic
 
+test: test.c
+	$(CC) $(CFLAGS) -o test test.c
 
-ifdef PULL
-
-CFLAGS += -DPULL
-
-PULL : clean box
-endif
-
-box: box.o map.o helper_funcs.o io.o movement.o
-	$(CC) $(CFLAGS) -o box box.o map.o helper_funcs.o io.o movement.o
-
-box.o: box.c map.h helper_funcs.h io.h
-	$(CC) $(CFLAGS) -c box.c
-
-map.o: map.c map.h helper_funcs.h
-	$(CC) $(CFLAGS) -c map.c
-
-helper_funcs.o: helper_funcs.c helper_funcs.h
-	$(CC) $(CFLAGS) -c helper_funcs.c
-
-io.o: io.c io.h
-	$(CC) $(CFLAGS) -c io.c
-
-movement.o: movement.c movement.h 
-	$(CC) $(CFLAGS) -c movement.c
+run: test
+	./test
 
 clean:
-	rm -f box *.o
+	rm -f test

@@ -75,6 +75,7 @@ int main(int argc, char *argv[])
     Marking Criteria : Clears screen - Re-Prints the map on every action
 
      */
+    
     while (!isWin(goal_col, goal_row, box_row, box_col))
 
     {
