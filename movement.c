@@ -4,7 +4,9 @@
 #include <string.h>
 #include "map.h"
 #include "io.h"
-        // move(map_array, &player_row, &player_col, &box_row, &box_col, pull, (*getchar)());
+#include "LinkedList.h"
+#include "map.h"
+struct Node *head = NULL;
 
 void move(char **map_array, int *player_row, int *player_col, int *box_row, int *box_col, int pull, char dir)
 {
@@ -22,7 +24,7 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
     {
     case 'w':
 
-        if (!((map_array[*player_row - 1][*player_col] == '*')||(map_array[*player_row - 1][*player_col] == 'O')))
+        if (!((map_array[*player_row - 1][*player_col] == '*') || (map_array[*player_row - 1][*player_col] == 'O')))
 
         {
 
@@ -30,13 +32,16 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
             {
 
                 /*Marking Crieteria: Able to push the player around player  */
-                if ((map_array[*box_row - 1][*box_col] != '*')||(map_array[*box_row - 1][*box_col] != '*'))
+                if ((map_array[*box_row - 1][*box_col] != '*'))
                 {
+                    push(&head, createCoordinates(*box_row, *box_col));
+
                     *box_row = *box_row - 1;
                 }
             }
             else if (((pull) && (isnear(*player_col, *player_row, *box_col, *box_row) == 's')))
             {
+                push(&head, createCoordinates(*box_row, *box_col));
 
                 *box_row = *box_row - 1;
             }
@@ -51,7 +56,7 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
         break;
 
     case 'a':
-        if (!((map_array[*player_row][*player_col - 1] == '*')||(map_array[*player_row][*player_col - 1] == 'O')))
+        if (!((map_array[*player_row][*player_col - 1] == '*') || (map_array[*player_row][*player_col - 1] == 'O')))
         {
             if ((isnear(*player_col, *player_row, *box_col, *box_row) == 'a'))
             {
@@ -59,12 +64,15 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
 
                 if ((map_array[*box_row][*box_col - 1] != '*'))
                 {
+                    push(&head, createCoordinates(*box_row, *box_col));
+
                     *box_col = *box_col - 1;
                 }
             }
 
             else if (((pull) && (isnear(*player_col, *player_row, *box_col, *box_row) == 'd')))
             {
+                push(&head, createCoordinates(*box_row, *box_col));
 
                 *box_col = *box_col - 1;
             }
@@ -78,7 +86,7 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
         break;
 
     case 's':
-        if (!((map_array[*player_row + 1][*player_col] == '*')||(map_array[*player_row + 1][*player_col] == 'O')))
+        if (!((map_array[*player_row + 1][*player_col] == '*') || (map_array[*player_row + 1][*player_col] == 'O')))
         {
 
             if (((isnear(*player_col, *player_row, *box_col, *box_row) == 's')))
@@ -88,12 +96,15 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
 
                 if ((map_array[*box_row + 1][*box_col] != '*'))
                 {
+                    push(&head, createCoordinates(*box_row, *box_col));
+
                     *box_row = *box_row + 1;
                 }
             }
 
             else if (((pull) && (isnear(*player_col, *player_row, *box_col, *box_row) == 'w')))
             {
+                push(&head, createCoordinates(*box_row, *box_col));
 
                 *box_row = *box_row + 1;
             }
@@ -107,7 +118,7 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
         break;
 
     case 'd':
-        if (!((map_array[*player_row][*player_col + 1] == '*')||(map_array[*player_row][*player_col + 1] == 'O')))
+        if (!((map_array[*player_row][*player_col + 1] == '*') || (map_array[*player_row][*player_col + 1] == 'O')))
         {
             if ((isnear(*player_col, *player_row, *box_col, *box_row) == 'd'))
             {
@@ -115,12 +126,15 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
 
                 if ((map_array[*box_row][*box_col + 1] != '*'))
                 {
+                    push(&head, createCoordinates(*box_row, *box_col));
+
                     *box_col = *box_col + 1;
                 }
             }
 
             else if (((pull) && (isnear(*player_col, *player_row, *box_col, *box_row) == 'a')))
             {
+                push(&head, createCoordinates(*box_row, *box_col));
 
                 *box_col = *box_col + 1;
             }
@@ -185,10 +199,32 @@ int isWin(int box_col, int box_row, int goal_row, int goal_col)
     }
 
     return win;
-
 }
 
+struct Coordinates createCoordinates(int x, int y)
+{
+    struct Coordinates coord;
+    coord.x = x;
+    coord.y = y;
+    return coord;
+}
 
+void printall()
+{
+    printStack(head);
+}
 
-
-
+void track(char **map_array)
+{
+    int i = 0;
+    printf("Coordinates Tracked:\n");
+    struct Node *currentNode = head;
+    while (currentNode != NULL)
+    {
+        i++;
+        track_painter(map_array,&currentNode->data.x,&currentNode->data.y);
+        printf("(%d, %d)\n", currentNode->data.x, currentNode->data.y);
+        currentNode = currentNode->next;
+    }
+    printf("\n\n%d times\n\n", i);
+}

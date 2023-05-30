@@ -5,10 +5,12 @@
 #include "helper_funcs.h"
 #include "io.h"
 #include "movement.h"
+#include "LinkedList.h"
 
 int main(int argc, char *argv[])
 
 {
+
 #ifdef PULL
     int pull = 1;
 #else
@@ -25,18 +27,24 @@ int main(int argc, char *argv[])
     char (*getchar)();
     char filename[] = "data.txt";
     file = fopen(filename, "r");
-
-    int map_row = 0, map_col = 0, player_row = 0, player_col = 0, goal_row = 0, goal_col = 0, box_row = 0, box_col = 0, object_row = 0, object_col = 0, tempx = 0, tempy = 0;
+    int log = 0, map_row = 0, map_col = 0, player_row = 0, player_col = 0, goal_row = 0, goal_col = 0, box_row = 0, box_col = 0, object_row = 0, object_col = 0, tempx = 0, tempy = 0;
     char tempc = '\0';
     printf("Fabric");
     printf("Creating Fabric %d", fscanf(file, "%d %d", &map_row, &map_col));
 
-    /* Declared Variables required
-        They are not global variables
-        they are accessable only to the main function
-            Marking Criteria : Using global variables
-         */
-    getchar = &get_input;
+
+
+
+
+
+
+        /* Declared Variables requiredclear
+
+            They are not global variables
+            they are accessable only to the main function
+                Marking Criteria : Using global variables
+             */
+        getchar = &get_input;
 
     initRandon();
 
@@ -111,16 +119,15 @@ int main(int argc, char *argv[])
 
         print_map(map_array, map_row, map_col, 0);
         printf("Print map caled");
-            printf(" \n\naddr %p\n\n",&player_col);
-
+        printf(" \n\naddr %p\n\n", &player_col);
 
         /* Removes the players from arrya to avoid double char */
         remove_players(map_array, player_row, player_col, goal_row, goal_col, box_row, box_col);
-printf("Players removed from map");
-printf("\n\n\n calling pathtracker\n\n\n");
-path_tracker(map_array, player_row, player_col);
+        printf("Players removed from map");
+        printf("\n\n\n calling pathtracker\n\n\n");
         /* Marking Criteria : Able to Move the player with keyboard input */
-        move(map_array, &player_row, &player_col, &box_row, &box_col, pull, (*getchar)());
+         move(map_array, &player_row, &player_col, &box_row, &box_col, pull, (*getchar)());
+       
         printf("Move unc called");
         /* Used function Pointer (*getchar) */
 
@@ -133,7 +140,7 @@ path_tracker(map_array, player_row, player_col);
     print_map(map_array, map_row, map_col, 1);
 
     printf("Congratulations You have won The Game \n");
-
+track(map_array);
     /* ReUsing pull varibale to save memory used  */
 
     /* Clearing memory */

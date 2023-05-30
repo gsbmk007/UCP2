@@ -58,19 +58,11 @@ void print_map(char **map_array, int map_row, int map_col, int win)
                     printf("\033[41m");
                 }
             }
-            if (map_array[i][j] == 's')
-            {
-                /* Changes to Blue */
-                printf("\033[44m");
-           
-                printf(" ");
-                printf("\033[49m");
-            }
-            else
-            {
+            
+            
                 printf("%c", map_array[i][j]);
                 printf("\033[49m");
-            }
+            
         }
         printf("\n");
     }

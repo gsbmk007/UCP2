@@ -118,14 +118,10 @@ void remove_players(char **map_array,int player_row, int player_col, int goal_ro
 
 }
 
-void path_tracker(char **map_array, int player_row,int player_col){ 
-    printf("in path_tracker");
-    printf("%d,%d\n\n",player_row,player_col);
-    map_array[player_row][player_col] = 's';
-    printf("Doen emptying the box");
 
-
-
-
-
+void track_painter(char **map_array,int *x,int *y)
+{
+printf("Deleting Node %d,%d",*x,*y);
+    // map_array[box_row][box_col] = 's';
 }
+
