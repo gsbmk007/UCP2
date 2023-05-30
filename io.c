@@ -62,10 +62,7 @@ void print_map(char **map_array, int map_row, int map_col, int win)
             {
                 /* Changes to Blue */
                 printf("\033[44m");
-            }
-
-            if (map_array[i][j] == 's')
-            {
+           
                 printf(" ");
                 printf("\033[49m");
             }
