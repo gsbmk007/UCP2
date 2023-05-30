@@ -80,9 +80,12 @@ void create_fabric(char **map_array, int map_row, int map_cols)
 // }
 
 void create_players(char **map_array,int tempx,int tempy,char tempc){
+            
+        printf("\n\nTempx: %d, tempy: %d, tempc%c\n",tempx,tempy,tempc);
+
 
         map_array[tempx][tempy]=tempc;
-        printf("Tempx: %d, tempy: %d\n",tempx,tempy,tempc);
+        printf("\nCreated\n");
 
 
 }
@@ -112,6 +115,17 @@ void remove_players(char **map_array,int player_row, int player_col, int goal_ro
             map_array[player_row][player_col] = ' ';
             map_array[goal_row][goal_col]=' ';
              map_array[box_row][box_col] = ' ';
+
+}
+
+void path_tracker(char **map_array, int player_row,int player_col){ 
+    printf("in path_tracker");
+    printf("%d,%d\n\n",player_row,player_col);
+    map_array[player_row][player_col] = 's';
+    printf("Doen emptying the box");
+
+
+
 
 
 }

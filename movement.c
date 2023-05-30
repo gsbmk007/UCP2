@@ -4,9 +4,11 @@
 #include <string.h>
 #include "map.h"
 #include "io.h"
+        // move(map_array, &player_row, &player_col, &box_row, &box_col, pull, (*getchar)());
 
 void move(char **map_array, int *player_row, int *player_col, int *box_row, int *box_col, int pull, char dir)
 {
+
     /* Marking Crieteria: Using "Break " NOT on the switch case statement
             Have not used break(); anywhere except switch case
 
@@ -20,7 +22,7 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
     {
     case 'w':
 
-        if (!(map_array[*player_row - 1][*player_col] == '*'))
+        if (!((map_array[*player_row - 1][*player_col] == '*')||(map_array[*player_row - 1][*player_col] == 'O')))
 
         {
 
@@ -28,7 +30,7 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
             {
 
                 /*Marking Crieteria: Able to push the player around player  */
-                if ((map_array[*box_row - 1][*box_col] != '*'))
+                if ((map_array[*box_row - 1][*box_col] != '*')||(map_array[*box_row - 1][*box_col] != '*'))
                 {
                     *box_row = *box_row - 1;
                 }
@@ -49,7 +51,7 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
         break;
 
     case 'a':
-        if (!(map_array[*player_row][*player_col - 1] == '*'))
+        if (!((map_array[*player_row][*player_col - 1] == '*')||(map_array[*player_row][*player_col - 1] == 'O')))
         {
             if ((isnear(*player_col, *player_row, *box_col, *box_row) == 'a'))
             {
@@ -76,7 +78,7 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
         break;
 
     case 's':
-        if (!(map_array[*player_row + 1][*player_col] == '*'))
+        if (!((map_array[*player_row + 1][*player_col] == '*')||(map_array[*player_row + 1][*player_col] == 'O')))
         {
 
             if (((isnear(*player_col, *player_row, *box_col, *box_row) == 's')))
@@ -105,7 +107,7 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
         break;
 
     case 'd':
-        if (!(map_array[*player_row][*player_col + 1] == '*'))
+        if (!((map_array[*player_row][*player_col + 1] == '*')||(map_array[*player_row][*player_col + 1] == 'O')))
         {
             if ((isnear(*player_col, *player_row, *box_col, *box_row) == 'd'))
             {
@@ -183,4 +185,10 @@ int isWin(int box_col, int box_row, int goal_row, int goal_col)
     }
 
     return win;
+
 }
+
+
+
+
+
