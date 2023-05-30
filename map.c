@@ -59,27 +59,33 @@ void create_fabric(char **map_array, int map_row, int map_cols)
     }
 }
 
-void create_objects(char **map_array, int map_row, int map_col, int player_row, int player_col, int goal_row, int goal_col, int *box_row,int *box_col)
-{
-    int isset = 0;
-    /*   created a while loop so that it keeps generting
-       random coordinates if the coordinates are same as the player and the goal coordinates
-   */
-    while (!isset)
-    {
-    *box_row = randomUCP(2, map_row-1);
-    *box_col = randomUCP(2, map_col - 1);
-        if (!(((*box_row == goal_row) && (*box_col == goal_col)) || ((*box_row == player_row) && (*box_col == player_col))))
-        {
-            isset = 1;
-        }
-    }
-    map_array[*box_row][*box_col] = 'B';
-    map_array[player_row][player_col] = 'P';
-    map_array[goal_row][goal_col] = 'G';
+// void create_objects(char **map_array, int map_row, int map_col, int player_row, int player_col, int goal_row, int goal_col, int *box_row,int *box_col)
+// {
+//     int isset = 0;
+//     /*   created a while loop so that it keeps generting
+//        random coordinates if the coordinates are same as the player and the goal coordinates
+//    */
+//     while (!isset)
+//     {
+//     *box_row = randomUCP(2, map_row-1);
+//     *box_col = randomUCP(2, map_col - 1);
+//         if (!(((*box_row == goal_row) && (*box_col == goal_col)) || ((*box_row == player_row) && (*box_col == player_col))))
+//         {
+//             isset = 1;
+//         }
+//     }
+//     map_array[*box_row][*box_col] = 'B';
+//     map_array[player_row][player_col] = 'P';
+//     map_array[goal_row][goal_col] = 'G';
+// }
+
+void create_players(char **map_array,int tempx,int tempy,char tempc){
+
+        map_array[tempx][tempy]=tempc;
+        printf("Tempx: %d, tempy: %d\n",tempx,tempy,tempc);
+
+
 }
-
-
 
 /* Function to add players to coordinates */
 void plot_players(char **map_array,int player_row, int player_col, int goal_row, int goal_col, int box_row,int box_col){

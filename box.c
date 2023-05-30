@@ -17,23 +17,34 @@ int main(int argc, char *argv[])
     /* Implemented pull feature
     Marking Criteria : Implement the PULL feature with the conditional compilation
   */
+
+    FILE *file;
+
     char **map_array = NULL;
     char (*getchar)();
+    char filename[] = "data.txt";
+    file = fopen(filename, "r");
 
-    int map_row, map_col, player_row, player_col, goal_row, goal_col, box_row, box_col;
-    map_row = atoi(argv[1]);
-    map_col = atoi(argv[2]);
-    player_row = atoi(argv[3]);
-    player_col = atoi(argv[4]);
-    goal_row = atoi(argv[5]);
-    goal_col = atoi(argv[6]);
+    int map_row, map_col, player_row, player_col, goal_row, goal_col, box_row, box_col, object_row, object_col, tempx, tempy;
+
+    char tempc='\0';
+
+    printf("Creating Fabric %d", fscanf(file, "%d %d", &map_row, &map_col));
+    printf("Fabric");
+
+    create_fabric(map_array, map_row + 2, map_col + 2);
+
+    // while (fscanf(file, "%d %d %c", &tempx, &tempy, tempc))
+    // {
+    //     create_players(map_array,tempx,tempy,tempc);
+    //     printf("Tempx: %d, tempy: %d\n",tempx,tempy,tempc);
+    // }
 
     /* Declared Variables required
         They are not global variables
         they are accessable only to the main function
             Marking Criteria : Using global variables
          */
-
     getchar = &get_input;
 
     initRandon();
@@ -62,20 +73,18 @@ int main(int argc, char *argv[])
 
     /* Drawing map */
 
-    create_fabric(map_array, map_row + 2, map_col + 2);
-
     /* Randomly initialising box location
     Marking Criteria : Randomly initialize the box
     loaction correctly everytime the program starts  */
 
-    create_objects(map_array, map_row, map_col, player_row, player_col, goal_row, goal_col, &box_row, &box_col);
+    // create_objects(map_array, map_row, map_col, player_row, player_col, goal_row, goal_col, &box_row, &box_col);
 
     /* Game LOOP is on until won
 
     Marking Criteria : Clears screen - Re-Prints the map on every action
 
      */
-    
+
     while (!isWin(goal_col, goal_row, box_row, box_col))
 
     {
@@ -103,17 +112,15 @@ int main(int argc, char *argv[])
 
     /* Clearing memory */
 
-
     for (pull = 0; pull < map_row + 2; pull++)
     {
         free(map_array[pull]);
     }
     free(map_array);
-    
+
     return 1;
 
-/* Debug code  */
-/* printf("Getchar :%p \n map_row: %p\n map_col: %p\nplayer_row: %p\nplayer_col: %p\ngoal_row: %p\ngoal_col: %p\nbox_row: %p\n box_col: %p\n",getchar,&map_row, &map_col, &player_row, &player_col, &goal_row, &goal_col, &box_row, &box_col);
- */
-
+    /* Debug code  */
+    /* printf("Getchar :%p \n map_row: %p\n map_col: %p\nplayer_row: %p\nplayer_col: %p\ngoal_row: %p\ngoal_col: %p\nbox_row: %p\n box_col: %p\n",getchar,&map_row, &map_col, &player_row, &player_col, &goal_row, &goal_col, &box_row, &box_col);
+     */
 }
