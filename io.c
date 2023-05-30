@@ -36,7 +36,6 @@ void clear_screen()
     system("clear");
 }
 
-
 /* Printing the map and changing the background colours as rquired  */
 
 void print_map(char **map_array, int map_row, int map_col, int win)
@@ -59,12 +58,25 @@ void print_map(char **map_array, int map_row, int map_col, int win)
                     printf("\033[41m");
                 }
             }
+            if (map_array[i][j] == 's')
+            {
+                /* Changes to Red */
+                printf("\033[41m");
+            }
 
-            printf("%c", map_array[i][j]);
-            printf("\033[49m");
+            if (map_array[i][j] == 's')
+            {
+                printf(" ");
+                printf("\033[49m");
+            }
+            else
+            {
+                printf("%c", map_array[i][j]);
+                printf("\033[49m");
+            }
         }
         printf("\n");
     }
-    
+
     printf("Move the box to the goal to win the game!\nPress W to move Up \nPress A to move left\nPress S to move down \nPress D to move right\n");
 }

@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
     while (!isWin(goal_col, goal_row, box_row, box_col))
 
     {
-        // clear_screen();
+        clear_screen();
 
         print_map(map_array, map_row, map_col, 0);
         printf("Print map caled");
@@ -128,7 +128,7 @@ path_tracker(map_array, player_row, player_col);
         plot_players(map_array, player_row, player_col, goal_row, goal_col, box_row, box_col);
         printf("Added players to map ");
     }
-    // clear_screen();
+    clear_screen();
 
     print_map(map_array, map_row, map_col, 1);
 
