@@ -2,6 +2,7 @@
 #include <termios.h>
 #include "stdio.h"
 #include "stdlib.h"
+#include "Linkedlist.h"
 
 char get_input()
 {
@@ -38,8 +39,11 @@ void clear_screen()
 
 /* Printing the map and changing the background colours as rquired  */
 
-void print_map(char **map_array, int map_row, int map_col, int win)
-{
+void print_map(char **map_array, struct Node *head, int map_row, int map_col, int win) {
+    // function implementation
+
+    struct Node *current = head;
+    int isprint = 1;
     int i, j;
     for (i = 0; i < map_row + 2; i++)
     {
@@ -58,11 +62,27 @@ void print_map(char **map_array, int map_row, int map_col, int win)
                     printf("\033[41m");
                 }
             }
-            
-            
+            isprint = 1;
+            while (current != NULL)
+            {
+                if (current->data_type == COORDINATES)
+                {
+                    struct Coordinates *coord = (struct Coordinates *)current->data;
+                    int x = coord->x;
+                    int y = coord->y;
+                    if (x == map_row && y == map_col)
+                    {
+                        printf("s");
+                        isprint = 0;
+                    }
+                }
+                current = current->next;
+            }
+            if (isprint)
+            {
                 printf("%c", map_array[i][j]);
                 printf("\033[49m");
-            
+            }
         }
         printf("\n");
     }
