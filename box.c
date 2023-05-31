@@ -122,7 +122,7 @@ if (argc != 7)
 
   {
     clear_screen();
-    print_map(map_array, boxcoordinates,map_row, map_col, 0);
+    print_dam(map_array, boxcoordinates,map_row, map_col, 0);
 
     /* Removes the players from arrya to avoid do
    char */
@@ -144,7 +144,7 @@ dir= (*getchar)();
   }
   clear_screen();
 
-  print_map(map_array,boxcoordinates, map_row, map_col, 0);
+  print_dam(map_array,boxcoordinates, map_row, map_col, 0);
 
   printf("Congratulations You have won The Game \n");
     printStack(boxcoordinates);

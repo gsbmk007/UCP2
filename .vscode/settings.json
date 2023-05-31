@@ -4,6 +4,8 @@
         "stdlib.h": "c",
         "linkedlist.h": "c",
         "map.h": "c",
-        "movement.h": "c"
+        "movement.h": "c",
+        "stdio.h": "c",
+        "termios.h": "c"
     }
 }
