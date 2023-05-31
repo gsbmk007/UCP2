@@ -118,22 +118,17 @@ int main(int argc, char *argv[])
         clear_screen();
 
         print_map(map_array, map_row, map_col, 0);
-        printf("Print map caled");
-        printf(" \n\naddr %p\n\n", &player_col);
 
-        /* Removes the players from arrya to avoid double char */
+        /* Removes the players from arrya to avoid do
+       char */
         remove_players(map_array, player_row, player_col, goal_row, goal_col, box_row, box_col);
-        printf("Players removed from map");
-        printf("\n\n\n calling pathtracker\n\n\n");
         /* Marking Criteria : Able to Move the player with keyboard input */
          move(map_array, &player_row, &player_col, &box_row, &box_col, pull, (*getchar)());
        
-        printf("Move unc called");
-        /* Used function Pointer (*getchar) */
+        /* Used  Pointer (*getchar) */
 
         /* Places the players on the map */
         plot_players(map_array, player_row, player_col, goal_row, goal_col, box_row, box_col);
-        printf("Added players to map ");
     }
     clear_screen();
 
