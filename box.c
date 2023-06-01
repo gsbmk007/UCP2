@@ -11,9 +11,7 @@
 int main(int argc, char *argv[])
 
 {
-    struct Node *boxcoordinates = NULL;
-
-    struct Node *movement = NULL;
+    
 
 
 #ifdef PULL
@@ -29,7 +27,8 @@ int main(int argc, char *argv[])
 
   FILE *file;
 
-
+  Stack stack;
+  stack.list.head = NULL;
   char **map_array = NULL;
   char (*getchar)();
   char filename[] = "data.txt";
@@ -122,17 +121,18 @@ if (argc != 7)
 
   {
     clear_screen();
-    print_dam(map_array, boxcoordinates,map_row, map_col, 0);
+    print_dam(map_array,map_row, map_col, 0);
 
     /* Removes the players from arrya to avoid do
    char */
     remove_players(map_array, player_row, player_col, goal_row, goal_col,
                    box_row, box_col);
     /* Marking Criteria : Able to Move the player with keyboard input */
+        push(&stack, map_array);
+
 dir= (*getchar)();
 
-    push(&boxcoordinates,COORDINATES,createCoordinates(box_row,box_col));
-    push(&movement,CHAR_DATA,createCharData(dir));
+    
     move(map_array, &player_row, &player_col, &box_row, &box_col, pull,
         dir);
 
@@ -144,11 +144,11 @@ dir= (*getchar)();
   }
   clear_screen();
 
-  print_dam(map_array,boxcoordinates, map_row, map_col, 0);
+  print_dam(map_array, map_row, map_col, 0);
 
   printf("Congratulations You have won The Game \n");
-    printStack(boxcoordinates);
-    printStack(movement);
+      displayLinkedList(&(stack.list), display2DArray);
+
 
   /* ReUsing pull varibale to save memory used  */
 

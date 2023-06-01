@@ -6,12 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Node *boxcoordinates = NULL;
-struct Node *movement = NULL;
 void move(char **map_array, int *player_row, int *player_col, int *box_row,
           int *box_col, int pull, char dir) {
-  struct Coordinates *coord1 =
-      (struct Coordinates *)malloc(sizeof(struct Coordinates));
+      
 
   /* Marking Crieteria: Using "Break " NOT on the switch case statement
           Have not used break(); anywhere except switch case
