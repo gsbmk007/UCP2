@@ -1,6 +1,8 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
+#include<stdio.h>
+
 // Generic Node structure
 typedef struct Node {
     void* data;
@@ -36,7 +38,7 @@ typedef struct {
 } Stack;
 
 // Push an element onto the stack
-void push(Stack* stack, void* data);
+void push(Stack* stack, void* data, int size) ;
 
 // Pop an element from the stack
 void* pop(Stack* stack);

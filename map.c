@@ -8,6 +8,8 @@
 char **create_2d_array(char **map_array, int map_row, int map_col) {
   int i, j;
 
+
+printf("%d in maprow /n/n/n",map_row);
   /*     allocate memory for the array of row pointers
    */
   map_array = (char **)malloc(map_row * sizeof(char *));

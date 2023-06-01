@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // Generic Node structure
 typedef struct Node {
@@ -48,10 +49,10 @@ void freeLinkedList(LinkedList *list, void (*freeFunction)(void *)) {
 }
 
 // Display function for a 2D array
-void display2DArray(void *data) {
+void display2DArray(void *data,map_row,map_col) {
   char **map_array = (char **)data;
-  for (int i = 0; i < 21; i++) {
-    for (int j = 0; j < 31; j++) {
+  for (int i = 0; i < 20; i++) {
+    for (int j = 0; j < 20; j++) {
       printf("%c ", map_array[i][j]);
     }
     printf("\n");
@@ -74,16 +75,40 @@ typedef struct {
 } Stack;
 
 // Push an element onto the stack
-void push(Stack *stack, void *data) { insertNode(&(stack->list), data); }
+void push(Stack* stack, void* data, int size) {
+    char** copy = (char**)malloc(size * sizeof(char*));
+    if (copy == NULL) {
+        printf("Memory allocation failed. Cannot push element.\n");
+        return;
+    }
+
+    for (int i = 0; i < size; i++) {
+        copy[i] = (char*)malloc((strlen(((char**)data)[i]) + 1) * sizeof(char));
+        if (copy[i] == NULL) {
+            printf("Memory allocation failed. Cannot push element.\n");
+            for (int j = 0; j < i; j++) {
+                free(copy[j]);
+            }
+            free(copy);
+            return;
+        }
+        strcpy(copy[i], ((char**)data)[i]);
+    }
+
+    insertNode(&(stack->list), copy);
+}
+
 
 // Pop an element from the stack
-void *pop(Stack *stack) {
-  if (stack->list.head == NULL) {
-    return NULL; // Stack is empty
-  }
-  Node *temp = stack->list.head;
-  stack->list.head = stack->list.head->next;
-  void *data = temp->data;
-  free(temp);
-  return data;
+void* pop(Stack* stack) {
+    if (stack->list.head == NULL) {
+        return NULL; // Stack is empty
+    }
+
+    Node* temp = stack->list.head;
+    stack->list.head = stack->list.head->next;
+    void* data = temp->data;
+    free(temp);
+
+    return data;
 }

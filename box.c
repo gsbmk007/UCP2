@@ -125,10 +125,13 @@ if (argc != 7)
 
     /* Removes the players from arrya to avoid do
    char */
+
+   printf("\n\n\n\n\nclearBox is hrere%c\n\n\n\n\n",map_array[box_row][box_col]);
+                            push(&stack, map_array,map_row);
+
     remove_players(map_array, player_row, player_col, goal_row, goal_col,
                    box_row, box_col);
     /* Marking Criteria : Able to Move the player with keyboard input */
-        push(&stack, map_array);
 
 dir= (*getchar)();
 
@@ -136,25 +139,30 @@ dir= (*getchar)();
     move(map_array, &player_row, &player_col, &box_row, &box_col, pull,
         dir);
 
+        if(dir=='u'){
+          break;
+        }
+
     /* Used  Pointer (*getchar) */
 
     /* Places the players on the map */
     plot_players(map_array, player_row, player_col, goal_row, goal_col, box_row,
                  box_col);
+
   }
   clear_screen();
 
   print_dam(map_array, map_row, map_col, 0);
 
   printf("Congratulations You have won The Game \n");
-      displayLinkedList(&(stack.list), display2DArray);
+   displayLinkedList(&(stack.list), display2DArray);
 
 
   /* ReUsing pull varibale to save memory used  */
 
   /* Clearing memory */
 
-  for (pull = 0; pull < map_row + 2; pull++) {
+  for(pull = 0; pull < map_row + 2; pull++) {
     free(map_array[pull]);
   }
   free(map_array);
