@@ -10,7 +10,6 @@
 int main(int argc, char *argv[])
 
 {
-
 #ifdef PULL
   int pull = 1;
 #else
@@ -22,23 +21,24 @@ int main(int argc, char *argv[])
 */
 
   FILE *file;
+  Stack *stack;
+  initializeStack(&stack);
+  GameState game1;
 
   char **map_array = NULL;
-  char **poppedArray = NULL;
-
+  char dir = ' ';
   char (*getchar)();
   char filename[] = "data.txt";
   file = fopen(filename, "r");
-  int log = 0, map_row = 0, map_col = 0, player_row = 0, player_col = 0,
-      goal_row = 0, goal_col = 0, box_row = 0, box_col = 0, object_row = 0,
-      object_col = 0, tempx = 0, tempy = 0;
 
-  char tempc = '\0', dir = NULL;
+  int map_row = 0, map_col = 0, player_row = 0, player_col = 0, goal_row = 0,
+      goal_col = 0, box_row = 0, box_col = 0, object_row = 0, object_col = 0,
+      tempx = 0, tempy = 0;
+  char tempc = '\0';
   printf("Fabric");
   printf("Creating Fabric %d", fscanf(file, "%d %d", &map_row, &map_col));
 
-  /* Declared Variables requiredclear
-
+  /* Declared Variables required
       They are not global variables
       they are accessable only to the main function
           Marking Criteria : Using global variables
@@ -49,29 +49,25 @@ int main(int argc, char *argv[])
 
   /* Creating and allocating 2d array using Malloc
   Marking Criteria : Proper memory allocation for the 2D map array.  */
-
-  map_array = create_2d_array(map_array, map_row + 2, map_col + 2);
+map_row+=2;
+map_col+=2;
+  map_array = create_2d_array(map_array, map_row, map_col);
   printf("Created 2d array");
 
-  create_fabric(map_array, map_row + 2, map_col + 2);
+  create_fabric(map_array, map_row, map_col);
 
   while (fscanf(file, "%d %d %c", &tempx, &tempy, &tempc) != -1)
 
   {
-    if (tempc == 'B')
-    {
+    if (tempc == 'B') {
       box_row = tempx;
       box_col = tempy;
       printf("%c: %d,%d\n\n", tempc, tempx, tempy);
-    }
-    else if (tempc == 'P')
-    {
+    } else if (tempc == 'P') {
       player_row = tempx;
       player_col = tempy;
       printf("%c: %d,%d\n\n", tempc, tempx, tempy);
-    }
-    else if (tempc == 'G')
-    {
+    } else if (tempc == 'G') {
       goal_row = tempx;
       goal_col = tempy;
       printf("%c: %d,%d\n\n", tempc, tempx, tempy);
@@ -120,24 +116,43 @@ if (argc != 7)
 
   {
     clear_screen();
-    print_dam(map_array, map_row, map_col, 0);
 
-    /* Removes the players from arrya to avoid do
-   char */
+    print_map(map_array, map_row, map_col, 0);
 
+    if (dir != 'u') {
 
-    printf("\n\n\n\n\nclearBox is hrere%c\n\n\n\n\n", map_array[box_row][box_col]);
+      game1.play_row = player_row;
+      game1.play_col = player_col;
+      game1.goal_col = goal_col;
+      game1.goal_row = goal_row;
+      game1.box_row = box_row;
+      game1.box_col = box_col;
+      game1.rows = map_row;
+      game1.col = map_col;
+    }
 
+    /* Removes the players from arrya to avoid double char */
     remove_players(map_array, player_row, player_col, goal_row, goal_col,
                    box_row, box_col);
+
+    if (dir != 'u') {
+    path_tracker(map_array, player_row, player_col);
+
+      game1.array = map_array;
+      push(&stack, &game1);
+    }
+    
+
     /* Marking Criteria : Able to Move the player with keyboard input */
+    if ((dir = (*getchar)()) == 'u') {
+      pop(&stack, &player_row, &player_col, &goal_row, &goal_col, &box_row,
+          &box_col, &map_array, &map_row, &map_col);
+    
+    } else {
 
-    dir = (*getchar)();
-   
-    move(map_array, &player_row, &player_col, &box_row, &box_col, pull,
-         dir);
-
-    /* Used  Pointer (*getchar) */
+      move(map_array, &player_row, &player_col, &box_row, &box_col, pull, dir);
+    }
+    /* Used function Pointer (*getchar) */
 
     /* Places the players on the map */
     plot_players(map_array, player_row, player_col, goal_row, goal_col, box_row,
@@ -145,19 +160,15 @@ if (argc != 7)
   }
   clear_screen();
 
-  print_dam(map_array, map_row, map_col, 0);
+  print_map(map_array, map_row, map_col, 1);
 
   printf("Congratulations You have won The Game \n");
-  clear_screen();
-
-  print_dam(map_array, map_row, map_col, 0);
 
   /* ReUsing pull varibale to save memory used  */
 
   /* Clearing memory */
 
-  for (pull = 0; pull < map_row + 2; pull++)
-  {
+  for (pull = 0; pull < map_row; pull++) {
     free(map_array[pull]);
   }
   free(map_array);

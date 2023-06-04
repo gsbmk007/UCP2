@@ -1,88 +1,86 @@
+#include "LinkedList.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// Node structure for the linked list
-struct Node {
-    char** data;    // Pointer to the 2D char array
-    int rows;       // Number of rows in the array
-    struct Node* next;
-};
-
-// Function to push a copy of a 2D char array to the linked list
-void push(struct Node** head, char** array, int rows) {
-    // Allocate memory for the new node
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-
-    // Allocate memory for the new array
-    char** newArray = (char**)malloc(rows * sizeof(char*));
-    for (int i = 0; i < rows; i++) {
-        newArray[i] = (char*)malloc(strlen(array[i]) + 1);
-        strcpy(newArray[i], array[i]);
-    }
-
-    // Set the data and row size of the new node
-    newNode->data = newArray;
-    newNode->rows = rows;
-
-    // Set the next pointer of the new node
-    newNode->next = *head;
-
-    // Update the head to point to the new node
-    *head = newNode;
+void initializeStack(Stack* stack) {
+    stack->top = NULL;
 }
 
-// Function to pop the top element from the linked list and copy it to a provided address
-void pop(struct Node** head, char*** dest, int* destRows) {
-    if (*head == NULL) {
-        printf("Error: The linked list is empty.\n");
+int isStackEmpty(Stack* stack) {
+    return stack->top == NULL;
+}
+
+void push(Stack* stack, const GameState* game) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = createGameState(game->play_row, game->play_col, game->goal_row, game->goal_col, game->box_row, game->box_col, game->array, game->rows, game->col);
+    newNode->next = stack->top;
+    stack->top = newNode;
+}
+
+void pop(Stack* stack, int* play_row, int* play_col, int* goal_row, int* goal_col, int* box_row, int* box_col, char*** array, int* rows, int* col) {
+    if (isStackEmpty(stack)) {
+        printf("Stack is empty.\n");
         return;
     }
 
-    // Get the top node
-    struct Node* top = *head;
+    Node* temp = stack->top;
+    stack->top = stack->top->next;
 
-    // Copy the data and row size to the destination
-    *dest = top->data;
-    *destRows = top->rows;
+    *play_row = temp->data->play_row;
+    *play_col = temp->data->play_col;
+    *goal_row = temp->data->goal_row;
+    *goal_col = temp->data->goal_col;
+    *box_row = temp->data->box_row;
+    *box_col = temp->data->box_col;
 
-    // Update the head to point to the next node
-    *head = top->next;
+    *rows = temp->data->rows;
+    *col = temp->data->col;
 
-    // Free the memory of the top node
-    for (int i = 0; i < top->rows; i++) {
-        free(top->data[i]);
+    *array = (char**)malloc((*rows) * sizeof(char*));
+    for (int i = 0; i < *rows; i++) {
+        (*array)[i] = (char*)malloc((*col) * sizeof(char));
+        memcpy((*array)[i], temp->data->array[i], (*col) * sizeof(char));
     }
-    free(top->data);
-    free(top);
+
+    freeGameState(temp->data);
+    free(temp);
 }
 
-// Function to print the elements in the linked list
-void printList(struct Node* head) {
-    struct Node* current = head;
+GameState* createGameState(int play_row, int play_col, int goal_row, int goal_col, int box_row, int box_col, char** array, int rows, int col) {
+    GameState* game = (GameState*)malloc(sizeof(GameState));
+    game->play_row = play_row;
+    game->play_col = play_col;
+    game->goal_row = goal_row;
+    game->goal_col = goal_col;
+    game->box_row = box_row;
+    game->box_col = box_col;
 
-    while (current != NULL) {
-        for (int i = 0; i < current->rows; i++) {
-            printf("%s\n", current->data[i]);
-        }
-        printf("\n");
-        current = current->next;
+    game->rows = rows;
+    game->col = col;
+
+    game->array = (char**)malloc(rows * sizeof(char*));
+    for (int i = 0; i < rows; i++) {
+        game->array[i] = (char*)malloc(col * sizeof(char));
+        memcpy(game->array[i], array[i], col * sizeof(char));
     }
+
+    return game;
 }
 
-// Function to free the memory allocated for the linked list
-void freeList(struct Node* head) {
-    struct Node* current = head;
-
-    while (current != NULL) {
-        for (int i = 0; i < current->rows; i++) {
-            free(current->data[i]);
-        }
-        free(current->data);
-
-        struct Node* next = current->next;
-        free(current);
-        current = next;
+void freeGameState(GameState* game) {
+    for (int i = 0; i < game->rows; i++) {
+        free(game->array[i]);
     }
+    free(game->array);
+    free(game);
 }
 
+void freeStack(Stack* stack) {
+    while (!isStackEmpty(stack)) {
+        Node* temp = stack->top;
+        stack->top = stack->top->next;
+        freeGameState(temp->data);
+        free(temp);
+    }
+}

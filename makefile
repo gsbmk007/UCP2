@@ -1,9 +1,9 @@
 CC=gcc
-CFLAGS=-std=c15 -Wall -ansi -pedantic
+CFLAGS=-std=c89 -Wall -ansi -pedantic
 
 ifdef PULL
 CFLAGS += -DPULL
-PULL : clean box
+PULL: clean box
 endif
 
 box: box.o map.o helper_funcs.o io.o movement.o LinkedList.o
