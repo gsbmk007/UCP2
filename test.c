@@ -1,52 +1,118 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-
-struct Coordinates {
-    int x;
-    int y;
-};
-
+// Node structure for the linked list
 struct Node {
-    struct Coordinates data;
+    char** data;    // Pointer to the 2D char array
+    int rows;       // Number of rows in the array
     struct Node* next;
 };
 
-struct Node* createNode(struct Coordinates data) {
+// Function to push a copy of a 2D char array to the linked list
+void push(struct Node** head, char** array, int rows) {
+    // Allocate memory for the new node
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
-}
 
-void insertAtBeginning(struct Node** head, struct Coordinates data) {
-    struct Node* newNode = createNode(data);
+    // Allocate memory for the new array
+    char** newArray = (char**)malloc(rows * sizeof(char*));
+    for (int i = 0; i < rows; i++) {
+        newArray[i] = (char*)malloc(strlen(array[i]) + 1);
+        strcpy(newArray[i], array[i]);
+    }
+
+    // Set the data and row size of the new node
+    newNode->data = newArray;
+    newNode->rows = rows;
+
+    // Set the next pointer of the new node
     newNode->next = *head;
+
+    // Update the head to point to the new node
     *head = newNode;
 }
 
+// Function to pop the top element from the linked list and copy it to a provided address
+void pop(struct Node** head, char*** dest, int* destRows) {
+    if (*head == NULL) {
+        printf("Error: The linked list is empty.\n");
+        return;
+    }
+
+    // Get the top node
+    struct Node* top = *head;
+
+    // Copy the data and row size to the destination
+    *dest = top->data;
+    *destRows = top->rows;
+
+    // Update the head to point to the next node
+    *head = top->next;
+
+    // Free the memory of the top node
+    for (int i = 0; i < top->rows; i++) {
+        free(top->data[i]);
+    }
+    free(top->data);
+    free(top);
+}
+
+// Function to print the elements in the linked list
 void printList(struct Node* head) {
     struct Node* current = head;
+
     while (current != NULL) {
-        printf("(%d, %d) -> ", current->data.x, current->data.y);
+        for (int i = 0; i < current->rows; i++) {
+            printf("%s\n", current->data[i]);
+        }
+        printf("\n");
         current = current->next;
     }
-    printf("NULL\n");
+}
+
+// Function to free the memory allocated for the linked list
+void freeList(struct Node* head) {
+    struct Node* current = head;
+
+    while (current != NULL) {
+        for (int i = 0; i < current->rows; i++) {
+            free(current->data[i]);
+        }
+        free(current->data);
+
+        struct Node* next = current->next;
+        free(current);
+        current = next;
+    }
 }
 
 int main() {
-    struct Node* head = NULL;
+    struct Node* list = NULL;
 
-    struct Coordinates c1 = {3, 5};
-    struct Coordinates c2 = {8, 2};
-    struct Coordinates c3 = {1, 7};
+    // Example usage
+    char* array1[] = { "Hello", "World" };
+    push(&list, array1, 2);
 
-    insertAtBeginning(&head, c1);
-    insertAtBeginning(&head, c2);
-    insertAtBeginning(&head, c3);
+    char* array2[] = { "OpenAI", "ChatGPT" };
+    push(&list, array2, 2);
 
-    printf("Linked List: ");
-    printList(head);
+    char** poppedArray;
+    int poppedRows;
+    pop(&list, &poppedArray, &poppedRows);
+
+    // Print the popped array
+    for (int i = 0; i < poppedRows; i++) {
+        printf("%s\n", poppedArray[i]);
+    }
+
+    // Free the memory
+    for (int i = 0; i < poppedRows; i++) {
+        free(poppedArray[i]);
+    }
+    free(poppedArray);
+
+    // Free the memory of the linked list
+    freeList(list);
 
     return 0;
 }

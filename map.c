@@ -50,6 +50,24 @@ void create_fabric(char **map_array, int map_row, int map_cols) {
     }
   }
 }
+#include <stdio.h>
+
+void extractCoordinates(char **array, int size, int *player_row, int *player_col, int *box_row, int *box_col, int *goal_row, int *goal_col) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (array[i][j] == 'P') {
+                *player_row = i;
+                *player_col = j;
+            } else if (array[i][j] == 'B') {
+                *box_row = i;
+                *box_col = j;
+            } else if (array[i][j] == 'G') {
+                *goal_row = i;
+                *goal_col = j;
+            }
+        }
+    }
+}
 
 // void create_objects(char **map_array, int map_row, int map_col, int
 // player_row, int player_col, int goal_row, int goal_col, int *box_row,int
