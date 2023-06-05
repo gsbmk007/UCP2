@@ -4,7 +4,6 @@
 #include <string.h>
 #include "map.h"
 #include "io.h"
-        // move(map_array, &player_row, &player_col, &box_row, &box_col, pull, (*getchar)());
 
 void move(char **map_array, int *player_row, int *player_col, int *box_row, int *box_col, int pull, char dir)
 {
@@ -30,6 +29,7 @@ void move(char **map_array, int *player_row, int *player_col, int *box_row, int 
             {
 
                 /*Marking Crieteria: Able to push the player around player  */
+                /* Markign Criteria: Assignment 2 Player and box should not be able to pass through the wall.  */
                 if ((map_array[*box_row - 1][*box_col] != '*')&&(map_array[*box_row - 1][*box_col] != 'O'))
                 {
                     *box_row = *box_row - 1;

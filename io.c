@@ -61,7 +61,9 @@ void print_map(char **map_array, int map_row, int map_col, int win)
                     printf("\033[41m");
                 }
             }
-            if (map_array[i][j] == 's')
+            /*Marking Criteria : Assignment 2  Correctly using appropriate blue background color for the box, 
+            which results in blue-colored trail based on the history of box movement. */
+            if (map_array[i][j] == 's'||(map_array[i][j] == 'B'))
             {
                 /* Changes to Blue */
                 printf("\033[44m");
@@ -81,5 +83,5 @@ void print_map(char **map_array, int map_row, int map_col, int win)
         printf("\n");
     }
 
-    printf("Move the box to the goal to win the game!\nPress W to move Up \nPress A to move left\nPress S to move down \nPress D to move right\n");
+    printf("Move the box to the goal to win the game!\nPress W to move Up \nPress A to move left\nPress S to move down \nPress D to move right\n Press 'u'to undo the move \n");
 }
