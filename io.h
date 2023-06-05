@@ -8,5 +8,3 @@ void enableBuffer();
 char get_input();
 
 #endif
-
-

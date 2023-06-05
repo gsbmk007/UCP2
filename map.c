@@ -1,4 +1,7 @@
 
+#ifndef MAP_H
+#define MAP_H
+
 #include "map.h"
 #include "helper_funcs.h"
 #include <stdio.h>
@@ -108,8 +111,6 @@ void remove_players(char **map_array, int player_row, int player_col,
 }
 
 void path_tracker(char **map_array, int player_row, int player_col) {
-  printf("in path_tracker");
-  printf("%d,%d\n\n", player_row, player_col);
   map_array[player_row][player_col] = 's';
-  printf("Doen emptying the box");
 }
+#endif

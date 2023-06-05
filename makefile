@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-std=c89 -Wall -ansi -pedantic
+CFLAGS=-std=c89 -Wall -ansi -pedantic -g
 
 ifdef PULL
 CFLAGS += -DPULL

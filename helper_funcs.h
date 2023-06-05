@@ -3,7 +3,6 @@
 
 /* Marking Crieteria: Header guards  */
 void initRandon();
-    
+
 int randomUCP(int low, int high);
 #endif
-
